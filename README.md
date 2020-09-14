@@ -147,6 +147,32 @@
                 should start for the duration specified per row in the <em>Examples.xlsx</em> file.</li>
         </ul>
     </li>
+    <li>
+        <h3>Steps to setup Tensorflow Model Experiments for Toxicity</h3>
+        <ul>
+            <li>
+                Fill in the Examples.xlsx to match your test criteria. The main variables to set in this file are -
+                <ul>
+                  <li>Network Profile</li>
+                  <li>Duration</li>
+                  <li>test_type -> choose between <strong>text_local</strong> and <strong>text_offload</strong> only</li>
+                  <li>No need to set sensor here</li>
+                  <li>pick whether you want periodic/poisson frequency for sending data</li>
+                  <li>Based on what you picked above set the *period* or <strong>poisson_frequency</strong></li>
+                  <li>Set the <strong>model</strong> to 2 which implies the text model.</li>
+                </ul>
+              </li>
+              <li>
+                  If you are doing offloading experiment with Toxicity model you will need to start the <strong>sensor_offload.js</strong> file too before 
+                  starting the experiment. Run this file separately on a terminal using <em>node sensor_offload.js</em>. This script listens for incoming
+                  input words or sentences and then classifies them as toxic or not and sends them back via MQTT to the watch program.
+              </li>
+              <li>If you are doing local experiment for Toxicity, then you do not need to start anything else, everything will happen within the watch
+                  program.
+              </li>
+              <li>Finally, run testAutomator.js to start the automated experiment</li>
+        </ul>
+    </li>
 
 
 
