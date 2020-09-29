@@ -130,7 +130,6 @@
                 </ul>
             </li>
         </ol>
-
     </li>
     <li>
         <h3>Setup for Android Wear (Huawei Watch)</h3>
@@ -239,8 +238,4 @@
                 should start for the duration specified per row in the <em>Examples.xlsx</em> file.</li>
         </ul>
     </li>
-
-
-
-
 </ol>
