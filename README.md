@@ -49,18 +49,93 @@
     </li>
     <li>
         <h3>Setup for Tizen OS (Samsung Gear S3)</h3>
-        <ul>
-            <li>If running a Samsung watch, change the <em>targetWatch</em> constant in the <em>testAutomater.js</em>
-                file to the address of your watch
-                too.</li>
-            <li>Make sure the test machine and the watch are on the same network.</li>
-            <li>It may not work on the first try because of SDB related issues, so re run it again.</li>
-        </ul>
+        <p>There are 3 use cases for Samsung Watches, namely:-
+            <ol>
+                <li>Sensor Data, local and offloaded processing</li>
+                <li>Tensorflow Audio Model inference on watch vs. offloaded</li>
+                <li>Tensorflow Toxicity Text Model inference on watch vs. offloaded</li>
+            </ol>
+        </p>
+        <ol>
+            <li>
+                <h4>Sensor Data</h4>
+                <ul>
+                    <li>Download the project from https://github.com/AUS-uni/Samsung-Tizen-WatchApp-Sensors </li>
+                    <li>If running a Samsung watch, change the <em>targetWatch</em> constant in the <em>testAutomater.js</em>
+                        file to the address of your watch
+                        too.</li>
+                    <li>Make sure the test machine and the watch are on the same network.</li>
+                    <li>Make sure that the MQTT broker IP Address is configured both on the dowloaded watch project under <em>js</em> -> <em>models</em> -> <strong><em>heartRate.js</em></strong>   </li>
+                    <li>This is also the file with all of the logic for the app.</li>
+                    <li>On the server project, start the <strong>sensor_offload.js</strong> file if you are running an example with sensor offloading. The rest of the configuration can be done on the excel file as mentioend in the server automation setup steps.</li>
+                    <li>Sometimes, the first run may not work because of SDB related issues, so re run it again.</li>
+                </ul>
+            </li>
+            <li>
+                <h4>Audio Model</h4>
+                <ul>
+                    <li>Download the project from https://github.com/AUS-uni/Samsung-Audio-TFModel-WatchApp</li>
+                    <li>
+                        Fill in the Examples.xlsx to match your test criteria. The main variables to set in this file are -
+                        <ul>
+                          <li>Network Profile</li>
+                          <li>Duration</li>
+                          <li>test_type -> choose between <strong>audio</strong> and <strong>c_audio</strong> only</li>
+                          <li>No need to set sensor here</li>
+                          <li>pick whether you want periodic/poisson frequency for sending data</li>
+                          <li>Based on what you picked above set the <strong>period</strong> or <strong>poisson_frequency</strong></li>
+                          <li>Set the <strong>model</strong> to 1 which implies the audio TF model.</li>
+                        </ul>
+                      </li>
+                      <li>
+                          If you are doing offloading experiment with Audio model you will need to start the <strong>getAudiowatch.js</strong> file and the
+                          <strong>audiobrowser.html</strong> files too before starting the experiment. Run these files separately on a terminal
+                          using <em>node getAudiowatch.js</em> and double cliking on the <strong>audiobrowser.html</strong> file.
+                          The script will start the node script and the html file will open on your browser and ask for microphone permssions which you will have to allow.
+                          The script listens for incoming audio blobs from the watch, then creates local wav files from the watch audio blob.
+                          It will then notify the browser to prepare for listening and then plays the audio file for the browser to listen.
+                          The browser then listens, predicts and sends the result back to the watch.
+                      </li>
+                      <li>If you are doing local experiment for Audio, then you do not need to start anything else, everything will happen within the watch
+                          program.
+                      </li>
+                      <li>Finally, run testAutomator.js to start the automated experiment</li>
+                </ul>
+            </li>
+            <li>
+                <h4>Toxicity Model</h4>
+                <ul>
+                    <li>Download the project from https://github.com/AUS-uni/smartwatch-toxicity-model </li>
+                    <li>
+                        Fill in the Examples.xlsx to match your test criteria. The main variables to set in this file are -
+                        <ul>
+                          <li>Network Profile</li>
+                          <li>Duration</li>
+                          <li>test_type -> choose between <strong>text_local</strong> and <strong>text_offload</strong> only</li>
+                          <li>No need to set sensor here</li>
+                          <li>pick whether you want periodic/poisson frequency for sending data</li>
+                          <li>Based on what you picked above set the *period* or <strong>poisson_frequency</strong></li>
+                          <li>Set the <strong>model</strong> to 2 which implies the text model.</li>
+                        </ul>
+                      </li>
+                      <li>
+                          If you are doing offloading experiment with Toxicity model you will need to start the <strong>sensor_offload.js</strong> file too before
+                          starting the experiment. Run this file separately on a terminal using <em>node sensor_offload.js</em>. This script listens for incoming
+                          input words or sentences and then classifies them as toxic or not and sends them back via MQTT to the watch program.
+                      </li>
+                      <li>If you are doing local experiment for Toxicity, then you do not need to start anything else, everything will happen within the watch
+                          program.
+                      </li>
+                      <li>Finally, run testAutomator.js to start the automated experiment</li>
+                </ul>
+            </li>
+        </ol>
+
     </li>
     <li>
         <h3>Setup for Android Wear (Huawei Watch)</h3>
         <ul>
-            <li>Download the Nativescript Android App from https://github.com/ayesh6x6x6/Watch3-Android-NativescriptApp.
+            <li>Download the Nativescript Android App from https://github.com/AUS-uni/Android-Nativescript-WatchApp.
             </li>
             <li>Move the downloaded project to the same location as your Main Server (this project). </li>
             <li>Go to your watch and enable adb debugging under developer options.</li>
@@ -75,7 +150,7 @@
     <li>
         <h3>Setup for Fitbit OS Device (Fitbit Versa)</h3>
         <ul>
-            <li>Download the Fitbit Device Fitbit App from https://github.com/ayesh6x6x6/Watch2FitbitApp</li>
+            <li>Download the Fitbit Device Fitbit App from https://github.com/AUS-uni/Fitbit-Sensors-WatchApp</li>
             <li>Move the downloaded project to the same location as your Main Server (this project).</li>
             <li>Download the Fitbit App on your phone which is the primary pair of the Fitbit device.</li>
             <li>Enable bluetooth and Wifi on your phone and open the app.</li>
@@ -85,6 +160,23 @@
                 using the Fitbit App) are on the same network.</li>
             <li>When running the server and having a Fitbit device, a second shell will open as
                 <strong>fitbit$</strong>, enter the command <em>install</em> here.</li>
+        </ul>
+    </li>
+    <li>
+        <h3>Setup for Apple Watch and iPhone (Project built using Watch Series 3 and iPhone 5s)</h3>
+        <ul>
+            <li>Download the Apple Project from https://github.com/AUS-uni/Apple-WatchApp-SensorData</li>
+            <li>Make sure you have downloaded the project on an Apple Computer with the latest XCode Editor.</li>
+            <li>Ensure all other developer permissions are enabled on your XCode and your devices. Refer to Apple Developer Guides for necesary licenses and developer requirements.</li>
+            <li>The <strong>SessionHandler.swift</strong> file under the <em>watchtest</em> directory is where the main logic for MQTT connection and sending sensor data lies.</li>
+            <li>Modify <strong>mqttConfig</strong> variable in this file to match <strong>host</strong> parameter with the IP Address of your MQTT Broker.</li>
+            <li>Under the <strong>override init()</strong> function, all of the MQTT Callback methods can be overridden with your use case, but do not change it if not needed.</li>
+            <li>The <strong>func session()</strong> method is where the companion App listens for the watch to send its accelerometer data with coordinates and then envelopes it into an MQTT message by stringifying it and sending it to the main server.</li>
+            <li>The above can be modified to receive other sensor data from the watch to the companion, <strong>*However in this case of Apple, heartrate data or any health related data is under the HealthKit library of Apple and requires long and unconnected methods to retrieve them therefore they are ommitted from this watch's use case. You can use all Motion related sensors like Gyroscope, Accelerometer etc. Another thing to note is that the method of launching the app is different from all other watches too because of the uniqueness of the way Apple development works (this will be mentioned in the next point).</strong></li>
+            <li>Proceed to launch the <em>testAutomater.js</em> file with the steps under <strong>Steps to Automate the Experiment</strong> and under <strong>Network Shaping & Requirements</strong> sections.</li>
+            <li>In this exception, the <em>testAutomator.js</em> will not start the watch app on your Apple Watch, so after beginning the server, launch the app on your watch using XCode by building and running the project. Select Apple Watch under devices.</li>
+            <li>Once the app is launched on the watch and the phone, the watch will automatically keep sending it's data to the server without the server having multiple callbacks.</li>
+            <li><strong>*Note: This watch has unique approaches and use cases because of the stark differences in the way Apple Development behaves as compared to Android, Google or the Web.</strong></li>
         </ul>
     </li>
     <li>
@@ -147,32 +239,7 @@
                 should start for the duration specified per row in the <em>Examples.xlsx</em> file.</li>
         </ul>
     </li>
-    <li>
-        <h3>Steps to setup Tensorflow Model Experiments for Toxicity</h3>
-        <ul>
-            <li>
-                Fill in the Examples.xlsx to match your test criteria. The main variables to set in this file are -
-                <ul>
-                  <li>Network Profile</li>
-                  <li>Duration</li>
-                  <li>test_type -> choose between <strong>text_local</strong> and <strong>text_offload</strong> only</li>
-                  <li>No need to set sensor here</li>
-                  <li>pick whether you want periodic/poisson frequency for sending data</li>
-                  <li>Based on what you picked above set the *period* or <strong>poisson_frequency</strong></li>
-                  <li>Set the <strong>model</strong> to 2 which implies the text model.</li>
-                </ul>
-              </li>
-              <li>
-                  If you are doing offloading experiment with Toxicity model you will need to start the <strong>sensor_offload.js</strong> file too before 
-                  starting the experiment. Run this file separately on a terminal using <em>node sensor_offload.js</em>. This script listens for incoming
-                  input words or sentences and then classifies them as toxic or not and sends them back via MQTT to the watch program.
-              </li>
-              <li>If you are doing local experiment for Toxicity, then you do not need to start anything else, everything will happen within the watch
-                  program.
-              </li>
-              <li>Finally, run testAutomator.js to start the automated experiment</li>
-        </ul>
-    </li>
+
 
 
 
